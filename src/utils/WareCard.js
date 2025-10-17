@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useRef, useState} from 'react';
 
 import { Navigation, Pagination, Scrollbar, A11y } from 'swiper/modules';
 import 'swiper/css/bundle';
@@ -9,13 +9,13 @@ function WareCard() {
     const [state, setState] = useState({
         cardMode: "btn-description"
     });
-    // console.log(state);
 
-
+    const swiperRef = useRef(null);
 
     const swiper1 = <Swiper
         modules={[Navigation, Pagination]}
         slidesPerView={1}
+        ref={swiperRef}
     >
         <SwiperSlide>
             <div className="ware-cards--description">
@@ -63,18 +63,15 @@ function WareCard() {
         </SwiperSlide>
     </Swiper>;
 
-    const swiperSmth = useSwiper();
-
     return (
         <div className="ware-cards--wrap">
             <img src="/images/Rectangle 2 .png" alt="Филе бедра цыпленка"/>
             <div className="ware-cards--innerwrap">
                 <h4 >Филе бедра цыпленка</h4>
                 <div>
-                    <div onClick={function (evt) {
-                        // debugger;
+                    <div className="swiper-pagination" onClick={function (evt) {
                         if (evt.target.classList.contains("btn-description")) {
-                            swiper1.slideTo(1);
+                            swiperRef.current.swiper.slideTo(0);
                             setState({
                                 cardMode: "btn-description"
                             });
@@ -82,9 +79,8 @@ function WareCard() {
                         }
 
                         if (evt.target.classList.contains("btn-params")) {
-                            // debugger;
-                            console.log(swiperSmth);
-                            swiperSmth.slideTo(2);
+                            swiperRef.current.swiper.slideTo(1);
+
                             setState({
                                 cardMode: "btn-params"
                             });
@@ -92,10 +88,10 @@ function WareCard() {
                         }
 
                         if (evt.target.classList.contains("btn-properties")) {
+                            swiperRef.current.swiper.slideTo(2);
                             setState({
                                 cardMode: "btn-properties"
                             });
-                            swiperSmth.slideTo(3);
                         }
                     }} >
                         <button className={state.cardMode === "btn-description" ?
@@ -105,11 +101,15 @@ function WareCard() {
                         <button className={state.cardMode === "btn-properties" ?
                             "btn btn-default btn-properties btn-active" : "btn btn-default btn-properties"}>Свойства</button>
                     </div>
+                    <div className="swiper-pagination1">
+                        <button className={state.cardMode === "btn-description" ?
+                            "btn btn-default btn-description btn-active" : "btn btn-default btn-description"}>Описание</button>
+                        <button className={state.cardMode === "btn-params" ?
+                            "btn btn-default btn-params btn-active" : "btn btn-default btn-params"}>Характеристики</button>
+                        <button className={state.cardMode === "btn-properties" ?
+                            "btn btn-default btn-properties btn-active" : "btn btn-default btn-properties"}>Свойства</button>
+                    </div>
                     {swiper1}
-
-
-
-
                 </div>
             </div>
         </div>
